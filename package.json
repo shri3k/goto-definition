@@ -1,0 +1,36 @@
+{
+  "name": "goto-symbol",
+  "version": "1.0.0",
+  "description": "Chrome extension none of your business man",
+  "main": "src/goto-symbol.js",
+  "scripts": {
+    "test": "mocha",
+    "build": "browserify -t babelify  src/goto-symbol.js --debug | exorcist dist/bundle.js.map > dist/bundle.js",
+    "watch": "watchify -t babelify  src/goto-symbol.js -o dist/bundle.js --debug | exorcist dist/bundle.js.map"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sinkingshriek/goto-symbol.git"
+  },
+  "keywords": [
+    "chrome",
+    "extensions",
+    "markdown",
+    "fuzzy"
+  ],
+  "author": "yojan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sinkingshriek/goto-symbol/issues"
+  },
+  "homepage": "https://github.com/sinkingshriek/goto-symbol",
+  "dependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.3",
+    "horsey": "^2.3.1"
+  },
+  "devDependencies": {
+    "exorcist": "^0.4.0",
+    "watchify": "^3.2.1"
+  }
+}
