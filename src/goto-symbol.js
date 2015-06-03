@@ -2,17 +2,24 @@
 var Mousetrap = require('mousetrap');
 var horsey = require('horsey');
 var modal = require('./modal');
+var tmpl = require('./tmpl/modal.hbs')
+var horse;
 
+const ESC = 27;
 
 var collectAnchors = () => {
   return document.querySelectorAll('a[href^="#"]:not([href$="#"])');
 }
 
+var getDOM = (selector) => {
+  return document.querySelector(selector);
+}
+
 var getMasterElm = () => {
-  return document.querySelector('#gssearch-master');
+  return getDOM('#gssearch-master');
 };
 var getSearchBox = () => {
-  return document.querySelector("#gssearch");
+  return getDOM("#gssearch");
 };
 
 var extractTxt = domArray => {
@@ -26,33 +33,54 @@ var extractTxt = domArray => {
   return [].map.call(domArray, getTxt);
 }
 var horseMe = dom => {
-  horsey(dom, {
+  horse = new horsey(dom, {
     suggestions: extractTxt(collectAnchors())
   });
+  var facebox = getDOM('.sey-list');
+  facebox.classList.add("gss-default-size");
 }
-var rm = () => {
+var rm = (e) => {
   let master = getMasterElm();
-  try {
-    document.body.removeChild(master);
-  } catch (e) {
+  if (e.keyCode === ESC) {
+    try {
+      document.body.removeChild(getDOM('#gssearch-master'));
+      horse.destroy();
+    } catch (e) {}
   }
 };
-var init = () => {
-  let master = document.createElement('div');
-  master.id = "gssearch-master";
-  master.className = "center";
-  let childForm = document.createElement('form');
-  childForm.action = "javascript:void(0);";
-  childForm.addEventListener("submit", function() {
-    location.hash = this.firstChild.value;
-    rm();
+
+var addEvents = () => {
+  getDOM('#gssearch-master form').addEventListener("submit", function() {
+    location.hash = this.firstChild.nextSibling.value;
+    rm({
+      keyCode: ESC
+    });
   }, false);
-  master.appendChild(childForm);
-  let childInput = '<input type="search" placeholder="search" id="gssearch"/>';
-  childForm.innerHTML = childInput;
-  document.body.appendChild(master);
+}
+
+var keyToggle = () => {
+  document.body.innerHTML += tmpl();
   getSearchBox().focus();
-  getSearchBox().addEventListener('blur', rm);
+  addEvents();
   horseMe(getSearchBox());
-};
-Mousetrap.bind('alt+o', init);
+  getSearchBox().addEventListener('keydown', rm);
+  getSearchBox().addEventListener('blur', () => {
+    setTimeout(() => {
+      rm({
+        keyCode: ESC
+      });
+    }, 100);
+  });
+  getSearchBox().addEventListener('horsey-selected', function() {
+    location.hash = this.value;
+    rm({
+      keyCode: ESC
+    });
+  });
+  getSearchBox().addEventListener('focus', () => {
+    horse.show();
+  });
+  horse.show();
+}
+
+Mousetrap.bind('alt+o', keyToggle);

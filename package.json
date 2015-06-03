@@ -5,8 +5,8 @@
   "main": "src/goto-symbol.js",
   "scripts": {
     "test": "mocha",
-    "build": "browserify -t babelify  src/goto-symbol.js --debug | exorcist dist/bundle.js.map > dist/bundle.js",
-    "watch": "watchify -t babelify  src/goto-symbol.js -o dist/bundle.js --debug | exorcist dist/bundle.js.map"
+    "build": "browserify -t babelify -t hbsfy  src/goto-symbol.js --debug | exorcist dist/bundle.js.map > dist/bundle.js",
+    "watch": "watchify -t babelify -t hbsfy  src/goto-symbol.js -o dist/bundle.js --debug | exorcist dist/bundle.js.map -v"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,8 @@
   },
   "devDependencies": {
     "exorcist": "^0.4.0",
+    "handlebars": "^3.0.3",
+    "hbsfy": "^2.2.1",
     "watchify": "^3.2.1"
   }
 }

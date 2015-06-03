@@ -6,9 +6,9 @@
   "content_scripts": [{
     "matches": ["*://*/*"],
     "js": ["dist/bundle.js"],
-    "css": ["../node_modules/horsey/dist/horsey.css", "style.css"]
+    "css": ["./node_modules/horsey/dist/horsey.css", "style.css"]
 
   }],
   "permissions": ["*://*/*"],
-  "web_accessible_resources": ["style.css", "../node_modules/horsey/dist/horsey.css"]
+  "web_accessible_resources": ["style.css", "./node_modules/horsey/dist/horsey.css"]
 }
